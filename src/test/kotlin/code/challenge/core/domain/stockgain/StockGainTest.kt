@@ -8,7 +8,7 @@ class StockGainTest {
 
 
     @Test
-    fun should_weighted_Average_price_16_66() {
+    fun should_weighted_Average_price_equals_16_66() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -26,6 +26,21 @@ class StockGainTest {
         val whenResult = 16.67
 
         assert(than == whenResult)
+    }
+
+    @Test
+    fun should_tax_free_for_stock_buyed(){
+        assert(false)
+    }
+
+    @Test
+    fun should_tax_free_for_profit_less_or_equals_than_20000(){
+        assert(false)
+    }
+
+    @Test
+    fun should_tax_charged_for_profit_more_than_20000(){
+        assert(false)
     }
 
     @Test
