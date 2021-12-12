@@ -30,16 +30,31 @@ class StockGainTest {
 
     @Test
     fun should_tax_free_for_stock_buyed(){
+        val given = Operation(
+            operation = BUY,
+            unitCost = 10.00,
+            quantity = 100
+        )
         assert(false)
     }
 
     @Test
     fun should_tax_free_for_profit_less_or_equals_than_20000(){
+        val given = Operation(
+            operation = SELL,
+            unitCost = 15.00,
+            quantity = 50
+        )
         assert(false)
     }
 
     @Test
     fun should_tax_charged_for_profit_more_than_20000(){
+        Operation(
+            operation = SELL,
+            unitCost = 20.00,
+            quantity = 5000
+        )
         assert(false)
     }
 
