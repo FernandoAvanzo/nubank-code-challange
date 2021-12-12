@@ -1,14 +1,32 @@
 package code.challenge.core.domain.stockgain
 
-import code.challenge.core.domain.model.stockgain.BUY
-import code.challenge.core.domain.model.stockgain.SELL
-import code.challenge.core.domain.model.stockgain.taxapply
-import code.challenge.core.domain.model.stockgain.Operation
-import code.challenge.core.domain.model.stockgain.Tax
+import code.challenge.core.domain.model.stockgain.*
 import kotlin.test.Test
 
 
 class StockGainTest {
+
+
+    @Test
+    fun should_weighted_Average_price_16_66() {
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                quantity = 10,
+                unitCost = 20.00,
+            ),
+            Operation(
+                operation = BUY,
+                quantity = 5,
+                unitCost = 10.00,
+            )
+        )
+
+        val than = weightedAveragePrice(given)
+        val whenResult = 16.67
+
+        assert(than == whenResult)
+    }
 
     @Test
     fun should_calc_tax_in_each_operation_case01() {

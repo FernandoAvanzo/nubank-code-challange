@@ -20,9 +20,12 @@ repositories {
 }
 
 dependencies {
+    //Aplications dependencies
     implementation(kotlin("stdlib",kotlinLanguageVersion))
     implementation(kotlin("stdlib-common",kotlinLanguageVersion))
     implementation(kotlin("reflect", kotlinLanguageVersion))
+
+    //test dependencies
     testImplementation(kotlin("test", kotlinTest))
     testImplementation(kotlin("test-common", kotlinTest))
     testImplementation(kotlin("test-annotations-common", kotlinTest))
@@ -30,9 +33,9 @@ dependencies {
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
