@@ -29,33 +29,62 @@ class StockGainTest {
     }
 
     @Test
-    fun should_tax_free_for_stock_buyed(){
-        val given = Operation(
-            operation = BUY,
-            unitCost = 10.00,
-            quantity = 100
+    fun should_tax_free_for_stock_buyed() {
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 100
+            )
         )
-        assert(false)
+
+        val then = taxrule(given)
+        val whenResult = 0.0
+
+        assert(then == whenResult)
     }
 
     @Test
-    fun should_tax_free_for_profit_less_or_equals_than_20000(){
-        val given = Operation(
-            operation = SELL,
-            unitCost = 15.00,
-            quantity = 50
+    fun should_tax_free_for_profit_less_or_equals_than_20000() {
+        val given = listOf(
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            )
         )
-        assert(false)
+
+        val then = taxrule(given)
+        val whenResult = 0.0
+
+        assert(then == whenResult)
     }
 
+    //Todo naõ entendi bem a regra do lucro e prejuizo. Preciso analisar ela novamente
     @Test
-    fun should_tax_charged_for_profit_more_than_20000(){
-        Operation(
-            operation = SELL,
-            unitCost = 20.00,
-            quantity = 5000
+    fun should_tax_charged_for_profit_more_than_20000() {
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.00,
+                quantity = 5000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 5.00,
+                quantity = 5000
+            ),
         )
-        assert(false)
+
+        val then = taxrule(given)
+        val whenResult = 10000.00
+
+        assert(then == whenResult)
     }
 
     @Test

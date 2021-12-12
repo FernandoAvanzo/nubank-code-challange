@@ -4,8 +4,26 @@ const val BUY = "buy"
 const val SELL = "sell"
 const val VTO = 0.00
 const val QAN = 0
+const val TAX_FREE = 20000.00
 
-fun taxapply(operation: List<Operation>): List<Tax> = emptyList()
+fun taxapply(operations: List<Operation>): List<Tax> = emptyList()
+
+fun taxrule(operations: List<Operation>) = operations.sumOf { op ->
+    when {
+        op.operation == BUY -> 0.0
+        totalOperationValue(
+            op.quantity,
+            op.unitCost
+        ).toDouble() <= TAX_FREE -> 0.0
+        else -> taxcalc(operations)
+    }
+}
+
+
+fun taxcalc(operations: List<Operation>) = losscal(operations) * 0.2
+
+//TODO Revisar esse metodo porque ele não esta passando
+fun losscal(operations: List<Operation>) = 0.00
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(
     operations, VTO,
