@@ -22,9 +22,10 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect", kotlinLanguageVersion))
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
+    //todo
+    //testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
+    //testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
+    //testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 val compileKotlin: KotlinCompile by tasks
