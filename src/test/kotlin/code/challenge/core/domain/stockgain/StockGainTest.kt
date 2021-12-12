@@ -5,11 +5,13 @@ import code.challenge.core.domain.model.stockgain.SELL
 import code.challenge.core.domain.model.stockgain.taxapply
 import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.Tax
+import kotlin.test.Test
 
 
 class StockGainTest {
 
-    fun should_calc_tax_in_each_operation_case01(){
+    @Test
+    fun should_calc_tax_in_each_operation_case01() {
         val givenInput = listOf(
             Operation(
                 operation = BUY,
@@ -42,9 +44,12 @@ class StockGainTest {
             )
         )
 
-        assert(thanOutput.zip(whenResult).all{
-            it.first.tax == it.second.tax
-        })
-
+        assert(thanOutput.size == whenResult.size)
+        assert(thanOutput
+            .zip(whenResult)
+            .all {
+                it.first.tax == it.second.tax
+            }
+        )
     }
 }

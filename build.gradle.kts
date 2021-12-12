@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinLanguageVersion: String by project
 val kotestVersion: String by project
-val mockkVersion: String by project
+val kotlinTest: String by project
 
 application {
     mainClass.set("code.challenge.Applicationkt")
@@ -20,12 +20,12 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib",kotlinLanguageVersion))
+    implementation(kotlin("stdlib-common",kotlinLanguageVersion))
     implementation(kotlin("reflect", kotlinLanguageVersion))
-    //todo
-    //testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
-    //testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-    //testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation(kotlin("test", kotlinTest))
+    testImplementation(kotlin("test-common", kotlinTest))
+    testImplementation(kotlin("test-annotations-common", kotlinTest))
 }
 
 val compileKotlin: KotlinCompile by tasks
