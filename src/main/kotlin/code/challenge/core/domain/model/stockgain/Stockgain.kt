@@ -1,5 +1,7 @@
 package code.challenge.core.domain.model.stockgain
 
+import kotlin.math.absoluteValue
+
 const val BUY = "buy"
 const val SELL = "sell"
 const val VTO = 0.00
@@ -15,29 +17,36 @@ fun taxrule(operations: List<Operation>) = operations.map { op ->
             op.quantity,
             op.unitCost
         ) <= TAX_EXEMPTION -> Tax(0.00)
-        else -> taxcalc(operations, op)
+        else -> taxapply(operations, op)
     }
 }
 
-fun taxcalc(operations: List<Operation>, op: Operation) = weightedAveragePrice(operations).let { wap ->
-    op.takeIf {
-        it.operation == SELL && it.unitCost > wap
-    }?.run {
-        Tax(profit(operation = this, weightedAveragePrice = wap) * TAX_RANGE)
-    } ?: Tax()
-}
+fun taxapply(operations: List<Operation>, op: Operation) = weightedAveragePrice(operations)
+    .let { wap ->
+        op.takeIf {
+            it.operation == SELL && it.unitCost > wap
+        }?.run { taxcalc(operations, op) } ?: Tax()
+    }
+
+fun taxcalc(operations: List<Operation>, op: Operation) = Tax(
+    (profit(
+        operation = op,
+        weightedAveragePrice = weightedAveragePrice(operations)
+    ) - loss(operations)) * TAX_RANGE
+)
 
 fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
     totalOperation(quantity, unitCost) - totalOperation(quantity, weightedAveragePrice)
 }
 
-fun loss(operations: List<Operation>) = weightedAveragePrice(operations).let { wap ->
-    operations.filter { it.operation == SELL }.sumOf {
-        it.unitCost.takeIf { unitCost ->
-            unitCost >= wap
-        }?.run { ZERO_LOSS } ?: (totalOperation(it.quantity, wap) - totalOperation(it.quantity, it.unitCost))
+fun loss(operations: List<Operation>) = weightedAveragePrice(operations)
+    .let { wap ->
+        operations.filter { it.operation == SELL }.sumOf {
+            it.unitCost.takeIf { unitCost ->
+                unitCost >= wap
+            }?.run { ZERO_LOSS } ?: profit(it, wap).absoluteValue
+        }
     }
-}
 
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(

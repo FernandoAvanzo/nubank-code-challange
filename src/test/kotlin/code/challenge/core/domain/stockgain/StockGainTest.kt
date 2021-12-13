@@ -24,7 +24,7 @@ class StockGainTest {
         val whendo = weightedAveragePrice(given)
         val then = 16.67
 
-        assert(whendo == then)
+        assert(whendo == then){ "${whendo}==${then}" }
     }
 
     @Test
@@ -50,7 +50,7 @@ class StockGainTest {
         val whendo = weightedAveragePrice(given)
         val then = 10.00
 
-        assert(whendo == then)
+        assert(whendo == then){ "${whendo}==${then}" }
     }
 
     @Test
@@ -71,7 +71,7 @@ class StockGainTest {
         val whendo = weightedAveragePrice(given)
         val then = 0.00
 
-        assert(whendo == then)
+        assert(whendo == then){ "${whendo}==${then}" }
     }
 
     @Test
@@ -88,6 +88,7 @@ class StockGainTest {
         val then = Tax(0.0)
 
         assert(whendo.first().tax == then.tax)
+        { "${whendo.first().tax}==${then.tax}" }
     }
 
     @Test
@@ -109,7 +110,7 @@ class StockGainTest {
 
         val then = 0.0
 
-        assert(whendo == then)
+        assert(whendo == then){ "${whendo}==${then}" }
     }
 
     @Test
@@ -136,7 +137,7 @@ class StockGainTest {
 
         val then = 25000.0
 
-        assert(whendo == then)
+        assert(whendo == then) { "${whendo}==${then}" }
     }
 
     @Test
@@ -221,7 +222,7 @@ class StockGainTest {
 
         val whendo = taxrule(given)
 
-        val than = listOf(
+        val then = listOf(
             Tax(
                 tax = 0.0
             ),
@@ -233,12 +234,55 @@ class StockGainTest {
             )
         )
 
-        assert(than.size == whendo.size)
-        assert(than
+        assert(then.size == whendo.size)
+        assert(then
             .zip(whendo)
             .all {
                 it.first.tax == it.second.tax
             }
+        ){ "${whendo}==${then}" }
+    }
+
+    @Test
+    fun should_calc_tax_in_each_operation_case03(){
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.0,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 5.0,
+                quantity = 5000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.0,
+                quantity = 5000
+            )
         )
+
+        val whendo = taxrule(given)
+
+        val then = listOf(
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 5000.0
+            )
+        )
+
+        assert(then.size == whendo.size)
+        assert(then
+            .zip(whendo)
+            .all {
+                it.first.tax == it.second.tax
+            }
+        ){ "${whendo}==${then}" }
     }
 }
