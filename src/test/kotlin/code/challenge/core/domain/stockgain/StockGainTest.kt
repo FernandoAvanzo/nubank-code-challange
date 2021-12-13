@@ -8,7 +8,7 @@ class StockGainTest {
 
 
     @Test
-    fun should_weighted_Average_price_equals_16_66() {
+    fun should_weighted_Average_price_equals_16_67() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -29,6 +29,53 @@ class StockGainTest {
     }
 
     @Test
+    fun should_weighted_Average_price_equals_10(){
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            )
+        )
+
+        val whendo = weightedAveragePrice(given)
+        val then = 10.00
+
+        assert(whendo == then)
+    }
+
+    @Test
+    fun should_weighted_Average_only_sells(){
+        val given = listOf(
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            )
+        )
+
+        val whendo = weightedAveragePrice(given)
+        val then = 0.00
+
+        assert(whendo == then)
+    }
+
+    @Test
     fun should_tax_free_for_stock_buyed() {
         val given = listOf(
             Operation(
@@ -42,6 +89,55 @@ class StockGainTest {
         val then = Tax(0.0)
 
         assert(whendo.first().tax == then.tax)
+    }
+
+    @Test
+    fun should_not_have_loss(){
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.00,
+                quantity = 5000
+            ),
+        )
+
+        val whendo = loss(given)
+
+        val then = 0.0
+
+        assert(whendo == then)
+    }
+
+    @Test
+    fun should_have_loss(){
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.00,
+                quantity = 5000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 5.00,
+                quantity = 5000
+            )
+        )
+
+        val whendo = loss(given)
+
+        val then = 5.00
+
+        assert(whendo == then)
     }
 
     @Test
