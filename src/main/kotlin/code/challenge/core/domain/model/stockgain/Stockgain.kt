@@ -29,12 +29,10 @@ fun taxapply(operations: List<Operation>, op: Operation) = weightedAveragePrice(
     }
 
 fun taxcalc(operations: List<Operation>, op: Operation) = Tax(
-    (profit(
+    tax = (profit(
         operation = op,
         weightedAveragePrice = weightedAveragePrice(operations)
-    ) - loss(
-        previousOperations(operations, op)
-    )) * TAX_RANGE
+    ) - loss(operations.previousOperations(op))) * TAX_RANGE
 )
 
 fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
@@ -69,8 +67,7 @@ fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost.run {
     this * quantity
 }
 
-fun previousOperations(operations: List<Operation>, op: Operation) = operations
-    .subList(0, operations.indexOf(op))
+private fun List<Operation>.previousOperations(op: Operation) = this.subList(0, this.indexOf(op))
 
 private fun Double.format() = String.format("%.2f", this).toDouble()
 
