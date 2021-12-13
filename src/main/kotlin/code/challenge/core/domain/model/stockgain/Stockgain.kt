@@ -65,7 +65,7 @@ fun weightedAveragePrice(operations: List<Operation>) = sumList(
 }
 
 
-fun totalOperation(quantity: Int, unitcost: Number): Double = unitcost.run {
+fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost.run {
     toDouble() * quantity
 }
 
