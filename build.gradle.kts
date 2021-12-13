@@ -23,7 +23,6 @@ dependencies {
     //Aplications dependencies
     implementation(kotlin("stdlib",kotlinLanguageVersion))
     implementation(kotlin("stdlib-common",kotlinLanguageVersion))
-    implementation(kotlin("reflect", kotlinLanguageVersion))
 
     //test dependencies
     testImplementation(kotlin("test", kotlinTest))
