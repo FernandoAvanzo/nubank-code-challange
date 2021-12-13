@@ -5,25 +5,29 @@ const val SELL = "sell"
 const val VTO = 0.00
 const val QAN = 0
 const val TAX_FREE = 20000.00
+const val TAX_RANGE = 0.2
 
-fun taxapply(operations: List<Operation>): List<Tax> = emptyList()
-
-fun taxrule(operations: List<Operation>) = operations.sumOf { op ->
+fun taxrule(operations: List<Operation>) = operations.map { op ->
     when {
-        op.operation == BUY -> 0.0
+        op.operation == BUY -> Tax(0.00)
         totalOperationValue(
             op.quantity,
             op.unitCost
-        ).toDouble() <= TAX_FREE -> 0.0
-        else -> taxcalc(operations)
+        ).toDouble() <= TAX_FREE -> Tax(0.00)
+        else -> taxcalc(operations,op)
     }
 }
 
+//Todo A função não esta calculando corretamente,
+//todo a comparação com o weightedAveragePrice esta errada
+fun taxcalc(operations: List<Operation>, op: Operation) = op
+    .takeIf { op.operation == SELL }?.run{
+        totalOperationValue(quantity, unitCost)
+            .toDouble()
+            .takeIf { it > weightedAveragePrice(operations) }
+            ?.let { Tax(it * TAX_RANGE) }
+    }?:Tax()
 
-fun taxcalc(operations: List<Operation>) = losscal(operations) * 0.2
-
-//TODO Revisar esse metodo porque ele não esta passando
-fun losscal(operations: List<Operation>) = 0.00
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(
     operations, VTO,

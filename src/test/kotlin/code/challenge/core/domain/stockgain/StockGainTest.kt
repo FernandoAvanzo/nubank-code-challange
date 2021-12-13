@@ -22,10 +22,10 @@ class StockGainTest {
             )
         )
 
-        val than = weightedAveragePrice(given)
-        val whenResult = 16.67
+        val whendo = weightedAveragePrice(given)
+        val then = 16.67
 
-        assert(than == whenResult)
+        assert(whendo == then)
     }
 
     @Test
@@ -38,10 +38,10 @@ class StockGainTest {
             )
         )
 
-        val then = taxrule(given)
-        val whenResult = 0.0
+        val whendo = taxrule(given)
+        val then = Tax(0.0)
 
-        assert(then == whenResult)
+        assert(whendo.first().tax == then.tax)
     }
 
     @Test
@@ -54,15 +54,58 @@ class StockGainTest {
             )
         )
 
-        val then = taxrule(given)
-        val whenResult = 0.0
+        val whendo = taxrule(given)
+        val then = Tax(0.0)
 
-        assert(then == whenResult)
+        assert(whendo.first().tax == then.tax)
     }
 
-    //Todo naõ entendi bem a regra do lucro e prejuizo. Preciso analisar ela novamente
+
     @Test
-    fun should_tax_charged_for_profit_more_than_20000() {
+    fun should_calc_tax_in_each_operation_case01() {
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.00,
+                quantity = 100
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 15.00,
+                quantity = 50
+            )
+        )
+
+        val whendo = taxrule(given)
+
+        val than = listOf(
+            Tax(
+                tax = 0.00
+            ),
+            Tax(
+                tax = 0.00
+            ),
+            Tax(
+                tax = 0.00
+            )
+        )
+
+        assert(than.size == whendo.size)
+        assert(than
+            .zip(whendo)
+            .all {
+                it.first.tax == it.second.tax
+            }
+        )
+    }
+
+    @Test
+    fun should_calc_tax_in_each_operation_case02() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -78,52 +121,26 @@ class StockGainTest {
                 operation = SELL,
                 unitCost = 5.00,
                 quantity = 5000
-            ),
-        )
-
-        val then = taxrule(given)
-        val whenResult = 10000.00
-
-        assert(then == whenResult)
-    }
-
-    @Test
-    fun should_calc_tax_in_each_operation_case01() {
-        val givenInput = listOf(
-            Operation(
-                operation = BUY,
-                unitCost = 10.00,
-                quantity = 100
-            ),
-            Operation(
-                operation = SELL,
-                unitCost = 15.00,
-                quantity = 50
-            ),
-            Operation(
-                operation = SELL,
-                unitCost = 15.00,
-                quantity = 50
             )
         )
 
-        val whenResult = taxapply(givenInput)
+        val whendo = taxrule(given)
 
-        val thanOutput = listOf(
+        val than = listOf(
             Tax(
-                tax = 0.00
+                tax = 0.0
             ),
             Tax(
-                tax = 0.00
+                tax = 10000.0
             ),
             Tax(
-                tax = 0.00
+                tax = 0.0
             )
         )
 
-        assert(thanOutput.size == whenResult.size)
-        assert(thanOutput
-            .zip(whenResult)
+        assert(than.size == whendo.size)
+        assert(than
+            .zip(whendo)
             .all {
                 it.first.tax == it.second.tax
             }
