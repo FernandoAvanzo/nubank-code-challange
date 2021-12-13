@@ -11,7 +11,7 @@ const val TAX_RANGE = 0.2
 fun taxrule(operations: List<Operation>) = operations.map { op ->
     when {
         op.operation == BUY -> Tax(0.00)
-        totalOperationValue(
+        totalOperation(
             op.quantity,
             op.unitCost
         ) <= TAX_EXEMPTION -> Tax(0.00)
@@ -19,29 +19,32 @@ fun taxrule(operations: List<Operation>) = operations.map { op ->
     }
 }
 
-//Todo A função não esta calculando corretamente,
-fun taxcalc(operations: List<Operation>, op: Operation) = op
-    .takeIf {
-        it.operation == SELL && it.unitCost > weightedAveragePrice(operations)
+fun taxcalc(operations: List<Operation>, op: Operation) = weightedAveragePrice(operations).let { wap ->
+    op.takeIf {
+        it.operation == SELL && it.unitCost > wap
     }?.run {
-        Tax(
-            (unitCost - loss(operations)) * TAX_RANGE
-        )
+        Tax(profit(operation = this, weightedAveragePrice = wap) * TAX_RANGE)
     } ?: Tax()
+}
 
-fun loss(operations: List<Operation>) = operations
-    .filter { it.operation == SELL }.sumOf {
+fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
+    totalOperation(quantity, unitCost) - totalOperation(quantity, weightedAveragePrice)
+}
+
+fun loss(operations: List<Operation>) = weightedAveragePrice(operations).let { wap ->
+    operations.filter { it.operation == SELL }.sumOf {
         it.unitCost.takeIf { unitCost ->
-            unitCost >= weightedAveragePrice(operations)
-        }?.run { ZERO_LOSS } ?: it.unitCost
+            unitCost >= wap
+        }?.run { ZERO_LOSS } ?: (totalOperation(it.quantity, wap) - totalOperation(it.quantity, it.unitCost))
     }
+}
 
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(
     operations, VTO,
     isNotBuy = { sum -> sum + 0 },
     isBuy = { operation, sum ->
-        sum + totalOperationValue(operation.quantity, operation.unitCost).toDouble()
+        sum + totalOperation(operation.quantity, operation.unitCost)
     }).run {
     operations.filter { it.operation == BUY }.takeIf { it.isNotEmpty() }?.let {
         sumList(it, QAN,
@@ -53,7 +56,7 @@ fun weightedAveragePrice(operations: List<Operation>) = sumList(
 }
 
 
-fun totalOperationValue(quantity: Int, unitcost: Number): Double = unitcost.run {
+fun totalOperation(quantity: Int, unitcost: Number): Double = unitcost.run {
     toDouble() * quantity
 }
 

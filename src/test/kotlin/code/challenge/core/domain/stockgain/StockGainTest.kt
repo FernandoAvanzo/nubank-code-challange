@@ -6,7 +6,6 @@ import kotlin.test.Test
 
 class StockGainTest {
 
-
     @Test
     fun should_weighted_Average_price_equals_16_67() {
         val given = listOf(
@@ -135,7 +134,7 @@ class StockGainTest {
 
         val whendo = loss(given)
 
-        val then = 5.00
+        val then = 25000.0
 
         assert(whendo == then)
     }
@@ -205,17 +204,17 @@ class StockGainTest {
         val given = listOf(
             Operation(
                 operation = BUY,
-                unitCost = 10.00,
+                unitCost = 10.0,
                 quantity = 10000
             ),
             Operation(
                 operation = SELL,
-                unitCost = 20.00,
+                unitCost = 20.0,
                 quantity = 5000
             ),
             Operation(
                 operation = SELL,
-                unitCost = 5.00,
+                unitCost = 5.0,
                 quantity = 5000
             )
         )
