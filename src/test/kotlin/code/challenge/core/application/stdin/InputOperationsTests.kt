@@ -1,5 +1,6 @@
 package code.challenge.core.application.stdin
 
+import code.challenge.core.application.adapters.stdin.decodeOperations
 import code.challenge.core.domain.model.stockgain.BUY
 import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.SELL
@@ -9,10 +10,9 @@ class InputOperationsTests {
 
     @Test
     fun should_build_a_operations_list_from_string(){
-        val given = "[{\"operation\":\"buy\", \"unit-cost\":10, \"quantity\": 10000}, {\"operation\":\"sell\",\n" +
-                "\"unit-cost\":20, \"quantity\": 5000}]"
+        val given = """[{"operation":"buy", "unit-cost":10, "quantity": 10000}, {"operation":"sell","unit-cost":20, "quantity": 5000}]"""
 
-        val whendo = emptyList<Operation>()
+        val whendo = given.decodeOperations()
 
         val then = listOf(
             Operation(
