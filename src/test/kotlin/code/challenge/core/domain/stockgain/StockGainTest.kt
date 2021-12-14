@@ -369,4 +369,62 @@ class StockGainTest {
             .all { it.first.tax == it.second.tax }
         ){ "${whendo}==${then}" }
     }
+
+    @Test
+    fun should_calc_tax_in_each_operation_case06(){
+        val given = listOf(
+            Operation(
+                operation = BUY,
+                unitCost = 10.0,
+                quantity = 10000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 2.0,
+                quantity = 5000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.0,
+                quantity = 2000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 20.0,
+                quantity = 2000
+            ),
+            Operation(
+                operation = SELL,
+                unitCost = 25.0,
+                quantity = 1000
+            )
+        )
+
+        val whendo = taxrule(given)
+
+        val then = listOf(
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 0.0
+            ),
+            Tax(
+                tax = 3000.0
+            )
+        )
+
+        assert(then.size == whendo.size)
+        assert(then
+            .zip(whendo)
+            .all { it.first.tax == it.second.tax }
+        ){ "${whendo}==${then}" }
+    }
+
 }
