@@ -10,23 +10,25 @@ const val ZERO_LOSS = 0.00
 const val TAX_EXEMPTION = 20000.00
 const val TAX_RANGE = 0.2
 
-fun taxrule(operations: List<Operation>) = operations.map { op ->
-    when {
-        op.operation == BUY -> Tax(0.00)
-        totalOperation(
-            op.quantity,
-            op.unitCost
-        ) <= TAX_EXEMPTION -> Tax(0.00)
-        else -> taxapply(operations, op)
-    }
-}
-
-fun taxapply(operations: List<Operation>, op: Operation) = weightedAveragePrice(operations)
+fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations)
     .let { wap ->
-        op.takeIf {
-            it.operation == SELL && it.unitCost >= wap
-        }?.run { taxcalc(operations, op, wap) } ?: Tax()
+        operations.map { op ->
+            when {
+                op.operation == BUY -> Tax(0.00)
+                totalOperation(
+                    op.quantity,
+                    op.unitCost
+                ) <= TAX_EXEMPTION -> Tax(0.00)
+                else -> taxapply(operations, op, wap)
+            }
+        }
     }
+
+fun taxapply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
+    .takeIf {
+        it.operation == SELL && it.unitCost >= weightedAveragePrice
+    }?.run { taxcalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
+
 
 fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
     tax = descountLoss(
@@ -34,7 +36,7 @@ fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Do
             operation = op,
             weightedAveragePrice
         ),
-        loss(operations.previousOperations(op),weightedAveragePrice)
+        loss(operations, weightedAveragePrice)
     ) * TAX_RANGE
 )
 
@@ -45,7 +47,7 @@ fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
 }
 
 fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
-    .filter { it.operation == SELL }.sumOf {
+    .sumOf {
         it.unitCost.takeIf { unitCost ->
             unitCost >= weightedAveragePrice
         }?.run { ZERO_LOSS } ?: profit(it, weightedAveragePrice)
