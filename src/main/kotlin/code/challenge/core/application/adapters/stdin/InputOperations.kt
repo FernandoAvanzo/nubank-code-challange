@@ -1,8 +1,10 @@
 package code.challenge.core.application.adapters.stdin
 
 import code.challenge.core.domain.model.stockgain.Operation
-import kotlinx.serialization.json.*
 import kotlinx.serialization.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.json.Json
 
 fun String.decodeOperations(): List<Operation> = Json
     .decodeFromString<List<OperationShadow>>(this)
