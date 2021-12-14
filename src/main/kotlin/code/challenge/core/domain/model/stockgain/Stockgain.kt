@@ -40,7 +40,9 @@ fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Do
     ) * TAX_RANGE
 )
 
-fun descountLoss(profit: Double, loss: Double) = profit - loss
+fun descountLoss(profit: Double, loss: Double) = (profit - loss).run {
+    takeIf { it < 0 }?.let { this * 0 }?:this
+}
 
 fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
     totalOperation(quantity, unitCost) - totalOperation(quantity, weightedAveragePrice)
