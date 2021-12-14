@@ -1,7 +1,5 @@
 package code.challenge.core.domain.model.stockgain
 
-import kotlin.math.absoluteValue
-
 const val BUY = "buy"
 const val SELL = "sell"
 const val VTO = 0.00
@@ -29,11 +27,16 @@ fun taxapply(operations: List<Operation>, op: Operation) = weightedAveragePrice(
     }
 
 fun taxcalc(operations: List<Operation>, op: Operation) = Tax(
-    tax = (profit(
-        operation = op,
-        weightedAveragePrice = weightedAveragePrice(operations)
-    ) - loss(operations.previousOperations(op))) * TAX_RANGE
+    tax = descountLoss(
+        profit(
+            operation = op,
+            weightedAveragePrice = weightedAveragePrice(operations)
+        ),
+        loss(operations.previousOperations(op))
+    ) * TAX_RANGE
 )
+
+fun descountLoss(profit: Double, loss: Double) = profit - loss
 
 fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
     totalOperation(quantity, unitCost) - totalOperation(quantity, weightedAveragePrice)
@@ -44,7 +47,7 @@ fun loss(operations: List<Operation>) = weightedAveragePrice(operations)
         operations.filter { it.operation == SELL }.sumOf {
             it.unitCost.takeIf { unitCost ->
                 unitCost >= wap
-            }?.run { ZERO_LOSS } ?: profit(it, wap).absoluteValue
+            }?.run { ZERO_LOSS } ?: profit(it, wap)
         }
     }
 
