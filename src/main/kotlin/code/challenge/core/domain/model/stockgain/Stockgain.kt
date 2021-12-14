@@ -47,10 +47,10 @@ fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
 }
 
 fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
-    .sumOf {
-        it.unitCost.takeIf { unitCost ->
+    .fold(0.0) { sum, op ->
+        op.unitCost.takeIf { unitCost ->
             unitCost >= weightedAveragePrice
-        }?.run { ZERO_LOSS } ?: profit(it, weightedAveragePrice)
+        }?.run { ZERO_LOSS } ?: (sum + profit(op, weightedAveragePrice))
     }.absoluteValue
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(
