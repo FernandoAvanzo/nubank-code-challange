@@ -1,7 +1,7 @@
 package code.challenge.core.application.adapters.stdout
 
 import code.challenge.core.domain.model.stockgain.Tax
-import org.junit.Test
+import kotlin.test.Test
 
 class OutputTaxsTests {
 

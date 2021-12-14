@@ -3,7 +3,7 @@ package code.challenge.core.application.adapters.stdin
 import code.challenge.core.domain.model.stockgain.BUY
 import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.SELL
-import org.junit.Test
+import kotlin.test.Test
 
 class InputOperationsTests {
 
