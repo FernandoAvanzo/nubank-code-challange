@@ -106,7 +106,7 @@ class StockGainTest {
             ),
         )
 
-        val whendo = loss(given)
+        val whendo = loss(given,weightedAveragePrice(given))
 
         val then = 0.0
 
@@ -133,7 +133,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = loss(given)
+        val whendo = loss(given,weightedAveragePrice(given))
 
         val then = 25000.0
 

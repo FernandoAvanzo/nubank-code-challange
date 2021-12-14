@@ -25,16 +25,16 @@ fun taxapply(operations: List<Operation>, op: Operation) = weightedAveragePrice(
     .let { wap ->
         op.takeIf {
             it.operation == SELL && it.unitCost >= wap
-        }?.run { taxcalc(operations, op) } ?: Tax()
+        }?.run { taxcalc(operations, op, wap) } ?: Tax()
     }
 
-fun taxcalc(operations: List<Operation>, op: Operation) = Tax(
+fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
     tax = descountLoss(
         profit(
             operation = op,
-            weightedAveragePrice = weightedAveragePrice(operations)
+            weightedAveragePrice
         ),
-        loss(operations.previousOperations(op))
+        loss(operations.previousOperations(op),weightedAveragePrice)
     ) * TAX_RANGE
 )
 
@@ -44,13 +44,11 @@ fun profit(operation: Operation, weightedAveragePrice: Double) = operation.run {
     totalOperation(quantity, unitCost) - totalOperation(quantity, weightedAveragePrice)
 }
 
-fun loss(operations: List<Operation>) = weightedAveragePrice(operations)
-    .let { wap ->
-        operations.filter { it.operation == SELL }.sumOf {
-            it.unitCost.takeIf { unitCost ->
-                unitCost >= wap
-            }?.run { ZERO_LOSS } ?: profit(it, wap)
-        }
+fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
+    .filter { it.operation == SELL }.sumOf {
+        it.unitCost.takeIf { unitCost ->
+            unitCost >= weightedAveragePrice
+        }?.run { ZERO_LOSS } ?: profit(it, weightedAveragePrice)
     }.absoluteValue
 
 fun weightedAveragePrice(operations: List<Operation>) = sumList(
