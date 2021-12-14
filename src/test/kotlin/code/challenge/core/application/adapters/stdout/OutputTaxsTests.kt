@@ -1,6 +1,5 @@
-package code.challenge.core.application.stdout
+package code.challenge.core.application.adapters.stdout
 
-import code.challenge.core.application.adapters.stdout.encodeTaxs
 import code.challenge.core.domain.model.stockgain.Tax
 import org.junit.Test
 

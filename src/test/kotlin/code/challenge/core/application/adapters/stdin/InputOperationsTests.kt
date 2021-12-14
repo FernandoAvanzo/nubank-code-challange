@@ -1,6 +1,5 @@
-package code.challenge.core.application.stdin
+package code.challenge.core.application.adapters.stdin
 
-import code.challenge.core.application.adapters.stdin.decodeOperations
 import code.challenge.core.domain.model.stockgain.BUY
 import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.SELL
