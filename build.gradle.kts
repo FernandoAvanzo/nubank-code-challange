@@ -23,7 +23,6 @@ repositories {
 dependencies {
     //Aplications dependencies
     implementation(kotlin("stdlib",kotlinLanguageVersion))
-    implementation(kotlin("stdlib-common",kotlinLanguageVersion))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerialization")
 
     //test dependencies
