@@ -17,7 +17,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    google()
 }
 
 dependencies {
