@@ -7,7 +7,7 @@ import code.challenge.core.domain.model.stockgain.taxrule
 fun main(args: Array<String>): Unit = args
     .takeIf { it.isNotEmpty() }?.forEach {
         println(calcStocksGainTaxs(it))
-    } ?: Unit
+    } ?: println("Nenhuma Lista De Operações encontrada")
 
 fun calcStocksGainTaxs(operations: String) = operations.run {
     taxrule(decodeOperations()).encodeTaxs()
