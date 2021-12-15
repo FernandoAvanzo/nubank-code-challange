@@ -27,3 +27,5 @@ hs_err_pid*
 /.gradle/
 /build/
 /out/
+/META-INF/MANIFEST.MF
+/META-INF/nubank-code-challange.kotlin_module
