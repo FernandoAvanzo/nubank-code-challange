@@ -1,4 +1,5 @@
 package code.challenge
+import calcStocksGainTaxs
 import kotlin.test.Test
 
 class ApplicationTest{

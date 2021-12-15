@@ -6,7 +6,7 @@ val kotlinTest: String by project
 val kotlinxSerialization: String by project
 
 application {
-    mainClass.set("code.challenge.Applicationkt")
+    mainClass.set("Applicationkt")
 }
 
 plugins {
@@ -39,4 +39,14 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "16"
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
