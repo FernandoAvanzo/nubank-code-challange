@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.Json
 
-fun String.decodeOperations(): List<Operation> = Json
+private val json = Json {isLenient = true}
+
+fun String.decodeOperations(): List<Operation> = json
     .decodeFromString<List<OperationShadow>>(this)
     .map{
         Operation(it.operation, it.quantity, it.unitCost)
