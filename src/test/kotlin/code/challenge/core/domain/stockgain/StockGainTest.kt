@@ -1,6 +1,12 @@
 package code.challenge.core.domain.stockgain
 
-import code.challenge.core.domain.model.stockgain.*
+import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
+import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
+import code.challenge.core.domain.model.stockgain.Operation
+import code.challenge.core.domain.model.stockgain.Tax
+import code.challenge.core.domain.model.stockgain.weightedAveragePrice
+import code.challenge.core.domain.model.stockgain.taxrule
+import code.challenge.core.domain.model.stockgain.loss
 import kotlin.test.Test
 
 

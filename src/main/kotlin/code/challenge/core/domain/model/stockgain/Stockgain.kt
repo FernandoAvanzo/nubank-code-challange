@@ -2,13 +2,13 @@ package code.challenge.core.domain.model.stockgain
 
 import kotlin.math.absoluteValue
 
-const val BUY = "buy"
-const val SELL = "sell"
-const val VTO = 0.00
-const val QAN = 0
-const val ZERO_LOSS = 0.00
-const val TAX_EXEMPTION = 20000.00
-const val TAX_RANGE = 0.2
+import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
+import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_EXEMPTION
+import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_RANGE
+import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
+import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
+import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
+import code.challenge.core.domain.model.stockgain.StockgainConstants.QAN
 
 fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations)
     .let { wap ->

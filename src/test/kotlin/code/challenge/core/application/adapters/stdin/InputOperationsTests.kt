@@ -1,8 +1,8 @@
 package code.challenge.core.application.adapters.stdin
 
-import code.challenge.core.domain.model.stockgain.BUY
+import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
 import code.challenge.core.domain.model.stockgain.Operation
-import code.challenge.core.domain.model.stockgain.SELL
+import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
 import kotlin.test.Test
 
 class InputOperationsTests {
