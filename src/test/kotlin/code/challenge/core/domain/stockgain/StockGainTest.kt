@@ -1,14 +1,14 @@
 package code.challenge.core.domain.stockgain
 
+import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
 import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
-import code.challenge.core.domain.model.stockgain.Operation
 import code.challenge.core.domain.model.stockgain.Tax
-import code.challenge.core.domain.model.stockgain.weightedAveragePrice
-import code.challenge.core.domain.model.stockgain.taxrule
+import code.challenge.core.domain.model.stockgain.filterByType
 import code.challenge.core.domain.model.stockgain.loss
+import code.challenge.core.domain.model.stockgain.taxrule
+import code.challenge.core.domain.model.stockgain.weightedAveragePrice
 import kotlin.test.Test
-
 
 class StockGainTest {
 
@@ -30,11 +30,11 @@ class StockGainTest {
         val whendo = weightedAveragePrice(given)
         val then = 16.67
 
-        assert(whendo == then){ "${whendo}==${then}" }
+        assert(whendo == then) { "$whendo==$then" }
     }
 
     @Test
-    fun should_weighted_Average_price_equals_10(){
+    fun should_weighted_Average_price_equals_10() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -53,31 +53,10 @@ class StockGainTest {
             )
         )
 
-        val whendo = weightedAveragePrice(given)
+        val whendo = weightedAveragePrice(given.filterByType(BUY))
         val then = 10.00
 
-        assert(whendo == then){ "${whendo}==${then}" }
-    }
-
-    @Test
-    fun should_weighted_Average_only_sells(){
-        val given = listOf(
-            Operation(
-                operation = SELL,
-                unitCost = 15.00,
-                quantity = 50
-            ),
-            Operation(
-                operation = SELL,
-                unitCost = 15.00,
-                quantity = 50
-            )
-        )
-
-        val whendo = weightedAveragePrice(given)
-        val then = 0.00
-
-        assert(whendo == then){ "${whendo}==${then}" }
+        assert(whendo == then) { "$whendo==$then" }
     }
 
     @Test
@@ -93,12 +72,11 @@ class StockGainTest {
         val whendo = taxrule(given)
         val then = Tax(0.0)
 
-        assert(whendo.first().tax == then.tax)
-        { "${whendo.first().tax}==${then.tax}" }
+        assert(whendo.first().tax == then.tax) { "${whendo.first().tax}==${then.tax}" }
     }
 
     @Test
-    fun should_not_have_loss(){
+    fun should_not_have_loss() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -112,15 +90,15 @@ class StockGainTest {
             ),
         )
 
-        val whendo = loss(given,weightedAveragePrice(given))
+        val whendo = loss(given, weightedAveragePrice(given))
 
         val then = 0.0
 
-        assert(whendo == then){ "${whendo}==${then}" }
+        assert(whendo == then) { "$whendo==$then" }
     }
 
     @Test
-    fun should_have_loss(){
+    fun should_have_loss() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -139,11 +117,11 @@ class StockGainTest {
             )
         )
 
-        val whendo = loss(given,weightedAveragePrice(given))
+        val whendo = loss(given, weightedAveragePrice(given.filterByType(BUY)))
 
         val then = 25000.0
 
-        assert(whendo == then) { "${whendo}==${then}" }
+        assert(whendo == then) { "$whendo==$then" }
     }
 
     @Test
@@ -161,7 +139,6 @@ class StockGainTest {
 
         assert(whendo.first().tax == then.tax)
     }
-
 
     @Test
     fun should_calc_tax_in_each_operation_case01() {
@@ -198,10 +175,11 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 
     @Test
@@ -239,14 +217,15 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 
     @Test
-    fun should_calc_tax_in_each_operation_case03(){
+    fun should_calc_tax_in_each_operation_case03() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -280,14 +259,15 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 
     @Test
-    fun should_calc_tax_in_each_operation_case04(){
+    fun should_calc_tax_in_each_operation_case04() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -321,14 +301,15 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 
     @Test
-    fun should_calc_tax_in_each_operation_case05(){
+    fun should_calc_tax_in_each_operation_case05() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -370,14 +351,15 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 
     @Test
-    fun should_calc_tax_in_each_operation_case06(){
+    fun should_calc_tax_in_each_operation_case06() {
         val given = listOf(
             Operation(
                 operation = BUY,
@@ -427,9 +409,10 @@ class StockGainTest {
         )
 
         assert(then.size == whendo.size)
-        assert(then
-            .zip(whendo)
-            .all { it.first.tax == it.second.tax }
-        ){ "${whendo}==${then}" }
+        assert(
+            then
+                .zip(whendo)
+                .all { it.first.tax == it.second.tax }
+        ) { "$whendo==$then" }
     }
 }

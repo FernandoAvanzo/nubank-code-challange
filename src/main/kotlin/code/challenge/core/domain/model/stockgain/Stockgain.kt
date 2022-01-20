@@ -9,7 +9,7 @@ import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
 import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
 import kotlin.math.absoluteValue
 
-fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations)
+fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations.filterByType(BUY))
     .let { wap ->
         operations.map { op ->
             when {
@@ -18,14 +18,14 @@ fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations)
                     op.quantity,
                     op.unitCost
                 ) <= TAX_EXEMPTION -> Tax(0.00)
-                else -> taxapply(operations, op, wap)
+                else -> taxapply(operations.filterByType(SELL), op, wap)
             }
         }
     }
 
 fun taxapply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
-        it.operation == SELL && it.unitCost >= weightedAveragePrice
+        it.unitCost >= weightedAveragePrice
     }?.run { taxcalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
 
 fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
@@ -53,17 +53,15 @@ fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
         }?.run { ZERO_LOSS } ?: (sum + profit(op, weightedAveragePrice))
     }.absoluteValue
 
-fun weightedAveragePrice(operations: List<Operation>) = sumList(
-    operations, VTO,
-    isNotBuy = { sum -> sum + 0 },
+fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
+    buyOperations, VTO,
     isBuy = { operation, sum ->
         sum + totalOperation(operation.quantity, operation.unitCost)
     }
 ).run {
-    operations.filter { it.operation == BUY }.takeIf { it.isNotEmpty() }?.let {
+    buyOperations.takeIf { it.isNotEmpty() }?.let {
         sumList(
             it, QAN,
-            isNotBuy = { sum -> sum + 0 },
             isBuy = { operation, sum -> sum + operation.quantity }
         )
     }?.let {
@@ -75,6 +73,8 @@ fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost.run {
     this * quantity
 }
 
+fun List<Operation>.filterByType(type: String) = this.filter { it.operation == type }
+
 private fun List<Operation>.previousOperations(op: Operation) = this.subList(0, this.indexOf(op))
 
 private fun Double.format() = String.format("%.2f", this).toDouble()
@@ -82,19 +82,8 @@ private fun Double.format() = String.format("%.2f", this).toDouble()
 private fun <T : Number> sumList(
     operations: List<Operation>,
     sumStart: T,
-    isNotBuy: (T) -> T,
     isBuy: (Operation, T) -> T
 ): T = operations
     .fold(sumStart) { sum, operation ->
-        buyActions(operation, sum, isNotBuy, isBuy)
+        isBuy(operation, sum)
     }
-
-private fun <T : Number> buyActions(
-    operation: Operation,
-    acc: T,
-    isNotBuy: (T) -> T,
-    isBuy: (Operation, T) -> T
-): T = when (operation.operation) {
-    BUY -> isBuy(operation, acc)
-    else -> isNotBuy(acc)
-}
