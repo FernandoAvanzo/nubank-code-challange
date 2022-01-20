@@ -1,14 +1,13 @@
 package code.challenge.core.domain.model.stockgain
 
-import kotlin.math.absoluteValue
-
 import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
+import code.challenge.core.domain.model.stockgain.StockgainConstants.QAN
+import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
 import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_EXEMPTION
 import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_RANGE
-import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
-import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
 import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
-import code.challenge.core.domain.model.stockgain.StockgainConstants.QAN
+import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
+import kotlin.math.absoluteValue
 
 fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations)
     .let { wap ->
@@ -28,7 +27,6 @@ fun taxapply(operations: List<Operation>, op: Operation, weightedAveragePrice: D
     .takeIf {
         it.operation == SELL && it.unitCost >= weightedAveragePrice
     }?.run { taxcalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
-
 
 fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
     tax = descountLoss(
@@ -60,11 +58,14 @@ fun weightedAveragePrice(operations: List<Operation>) = sumList(
     isNotBuy = { sum -> sum + 0 },
     isBuy = { operation, sum ->
         sum + totalOperation(operation.quantity, operation.unitCost)
-    }).run {
+    }
+).run {
     operations.filter { it.operation == BUY }.takeIf { it.isNotEmpty() }?.let {
-        sumList(it, QAN,
+        sumList(
+            it, QAN,
             isNotBuy = { sum -> sum + 0 },
-            isBuy = { operation, sum -> sum + operation.quantity })
+            isBuy = { operation, sum -> sum + operation.quantity }
+        )
     }?.let {
         (this / it).format()
     } ?: this.format()
