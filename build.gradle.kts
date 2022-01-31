@@ -20,11 +20,11 @@ repositories {
 }
 
 dependencies {
-    //Aplications dependencies
-    implementation(kotlin("stdlib",kotlinLanguageVersion))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerialization")
+    // Aplications dependencies
+    implementation(kotlin("stdlib", kotlinLanguageVersion))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:$kotlinxSerialization")
 
-    //test dependencies
+    // test dependencies
     testImplementation(kotlin("test", kotlinTest))
     testImplementation(kotlin("test-common", kotlinTest))
     testImplementation(kotlin("test-annotations-common", kotlinTest))
