@@ -55,14 +55,14 @@ fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
 
 fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
     buyOperations, VTO,
-    isBuy = { operation, sum ->
+    sumOperation = { operation, sum ->
         sum + totalOperation(operation.quantity, operation.unitCost)
     }
 ).run {
     buyOperations.takeIf { it.isNotEmpty() }?.let {
         sumList(
             it, QAN,
-            isBuy = { operation, sum -> sum + operation.quantity }
+            sumOperation = { operation, sum -> sum + operation.quantity }
         )
     }?.let {
         (this / it).format()
@@ -82,8 +82,8 @@ private fun Double.format() = String.format("%.2f", this).toDouble()
 private fun <T : Number> sumList(
     operations: List<Operation>,
     sumStart: T,
-    isBuy: (Operation, T) -> T
+    sumOperation: (Operation, T) -> T
 ): T = operations
     .fold(sumStart) { sum, operation ->
-        isBuy(operation, sum)
+        sumOperation(operation, sum)
     }
