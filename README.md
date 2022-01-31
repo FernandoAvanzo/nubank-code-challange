@@ -11,8 +11,8 @@ A linguagem escolhida para implmentar o teste foi o Kotlin,
 por se tratar de uma linguagem multiparadigma com sintaxe simples e de facil entendimento.
 O build e controle de dependencias da aplicação é feito através Gradle, usando notação de kotlin.
 Abaixo link de referencia das tecnologias.
- - [Kotlin]()
- - [Gradle]()
+ - [Kotlin](https://kotlinlang.org/docs/home.html)
+ - [Gradle](https://gradle.com)
 
 ## Paradigma empregado
 A aplicação foi implementada seguindo os conceitos do [paradigma funcional](https://cs.lmu.edu/~ray/notes/paradigms/)
