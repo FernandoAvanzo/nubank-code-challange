@@ -1,9 +1,10 @@
 package code.challenge.core.application.adapters.stdout
 
 import code.challenge.core.domain.model.stockgain.Tax
-import kotlinx.serialization.json.*
-import kotlinx.serialization.*
-
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 fun List<Tax>.encodeTaxs(): String = this
     .map {
