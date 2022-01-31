@@ -2,6 +2,10 @@
 Aplicação para calculo de ganho dcapital em compra de e venda de ações, 
 as regras de negocio estão definidas no documento com a descrição do problema.
 
+## Detalhes da Implementação
+Os detalhes da implementação especificações e informaçẽes adicionais ṕodem ser encontrados na pagina:
+- [Technical Challenge Nubank](https://www.notion.so/fernando-avanzo/Technical-Challenge-Nubank-7e545bfcf7a94da9b43ecaa2755a27f6)
+
 ## Tecnologias Adotada
 A linguagem escolhida para implmentar o teste foi o Kotlin, 
 por se tratar de uma linguagem multiparadigma com sintaxe simples e de facil entendimento.
