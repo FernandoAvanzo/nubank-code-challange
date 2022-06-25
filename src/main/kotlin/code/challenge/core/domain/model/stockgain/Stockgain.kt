@@ -27,7 +27,7 @@ fun isTaxFree(op: Operation) = totalOperation(op.quantity, op.unitCost) <= TAX_E
 fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
         it.unitCost >= weightedAveragePrice
-    }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
+    }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: freeTax()
 
 fun taxCalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
     tax = descountLoss(
@@ -55,16 +55,14 @@ fun loss(operations: List<Operation>, weightedAveragePrice: Double) = operations
     }.absoluteValue
 
 fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
-    buyOperations, VTO,
-    sumOperation = { operation, sum ->
-        sum + totalOperation(operation.quantity, operation.unitCost)
-    }
-).run {
+    buyOperations, VTO
+) { operation, sum ->
+    sum + totalOperation(operation.quantity, operation.unitCost)
+}.run {
     buyOperations.takeIf { it.isNotEmpty() }?.let {
         sumList(
-            it, QAN,
-            sumOperation = { operation, sum -> sum + operation.quantity }
-        )
+            it, QAN
+        ) { operation, sum -> sum + operation.quantity }
     }?.let {
         (this / it).format()
     } ?: this.format()
@@ -80,9 +78,9 @@ private fun Double.format() = String.format("%.2f", this).toDouble()
 
 private fun <T : Number> sumList(
     operations: List<Operation>,
-    sumStart: T,
+    initialValue: T,
     sumOperation: (Operation, T) -> T
 ): T = operations
-    .fold(sumStart) { sum, operation ->
+    .fold(initialValue) { sum, operation ->
         sumOperation(operation, sum)
     }
