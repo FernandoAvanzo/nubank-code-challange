@@ -27,9 +27,9 @@ fun isTaxFree(op: Operation) = totalOperation(op.quantity, op.unitCost) <= TAX_E
 fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
         it.unitCost >= weightedAveragePrice
-    }?.run { taxcalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
+    }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
 
-fun taxcalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
+fun taxCalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
     tax = descountLoss(
         profit(
             operation = op,
