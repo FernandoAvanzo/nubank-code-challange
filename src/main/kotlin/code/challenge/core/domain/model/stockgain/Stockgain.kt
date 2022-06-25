@@ -14,14 +14,13 @@ fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations.filte
         operations.map { op ->
             when {
                 op.operation == BUY -> Tax(0.00)
-                totalOperation(
-                    op.quantity,
-                    op.unitCost
-                ) <= TAX_EXEMPTION -> Tax(0.00)
+                isTaxFree(op) -> Tax(0.00)
                 else -> taxapply(operations.filterByType(SELL), op, wap)
             }
         }
     }
+
+fun isTaxFree(op: Operation) = totalOperation(op.quantity, op.unitCost) <= TAX_EXEMPTION
 
 fun taxapply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
