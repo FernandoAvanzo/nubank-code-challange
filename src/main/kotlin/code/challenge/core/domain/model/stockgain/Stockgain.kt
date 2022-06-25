@@ -30,7 +30,7 @@ fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: D
     }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: freeTax()
 
 fun taxCalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
-    tax = descountLoss(
+    tax = discountLoss(
         profit(
             operation = op,
             weightedAveragePrice
@@ -39,7 +39,7 @@ fun taxCalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Do
     ) * TAX_RANGE
 )
 
-fun descountLoss(profit: Double, loss: Double) = (profit - loss).run {
+fun discountLoss(profit: Double, loss: Double) = (profit - loss).run {
     takeIf { it < 0 }?.let { ZERO_LOSS } ?: this
 }
 
