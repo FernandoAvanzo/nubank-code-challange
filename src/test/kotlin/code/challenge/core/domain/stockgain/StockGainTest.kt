@@ -6,7 +6,7 @@ import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
 import code.challenge.core.domain.model.stockgain.Tax
 import code.challenge.core.domain.model.stockgain.filterByType
 import code.challenge.core.domain.model.stockgain.loss
-import code.challenge.core.domain.model.stockgain.taxrule
+import code.challenge.core.domain.model.stockgain.taxRule
 import code.challenge.core.domain.model.stockgain.weightedAveragePrice
 import kotlin.test.Test
 
@@ -69,7 +69,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
         val then = Tax(0.0)
 
         assert(whendo.first().tax == then.tax) { "${whendo.first().tax}==${then.tax}" }
@@ -134,7 +134,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
         val then = Tax(0.0)
 
         assert(whendo.first().tax == then.tax)
@@ -160,7 +160,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(
@@ -202,7 +202,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(
@@ -244,7 +244,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(
@@ -286,7 +286,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(
@@ -333,7 +333,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(
@@ -388,7 +388,7 @@ class StockGainTest {
             )
         )
 
-        val whendo = taxrule(given)
+        val whendo = taxRule(given)
 
         val then = listOf(
             Tax(

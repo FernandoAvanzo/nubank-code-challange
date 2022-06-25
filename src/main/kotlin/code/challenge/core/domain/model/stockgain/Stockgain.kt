@@ -9,20 +9,22 @@ import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
 import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
 import kotlin.math.absoluteValue
 
-fun taxrule(operations: List<Operation>) = weightedAveragePrice(operations.filterByType(BUY))
+fun taxRule(operations: List<Operation>) = weightedAveragePrice(operations.filterByType(BUY))
     .let { wap ->
         operations.map { op ->
             when {
-                op.operation == BUY -> Tax(0.00)
-                isTaxFree(op) -> Tax(0.00)
-                else -> taxapply(operations.filterByType(SELL), op, wap)
+                op.operation == BUY -> freeTax()
+                isTaxFree(op) -> freeTax()
+                else -> taxApply(operations.filterByType(SELL), op, wap)
             }
         }
     }
 
+fun freeTax() = Tax(0.0)
+
 fun isTaxFree(op: Operation) = totalOperation(op.quantity, op.unitCost) <= TAX_EXEMPTION
 
-fun taxapply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
+fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
         it.unitCost >= weightedAveragePrice
     }?.run { taxcalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: Tax()
@@ -68,9 +70,7 @@ fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
     } ?: this.format()
 }
 
-fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost.run {
-    this * quantity
-}
+fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost * quantity
 
 fun List<Operation>.filterByType(type: String) = this.filter { it.operation == type }
 
