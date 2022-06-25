@@ -20,7 +20,7 @@ as variaveis da aplicação são imutaveis, e toda mudança de estado na aplica�
 Foi tirado muito proveito dos aspectos funcionais do o kotlin como as [funções de escopo](https://kotlinlang.org/docs/scope-functions.html)
 
 ## Tecnica de desenvolvimento empregada: Test Driven Design
-Todo a aplicação foi desenvolvimento atravẽs do [TDD](https://www.agilealliance.org/glossary/tdd/#q=~(infinite~false~filters~(postType~(~'page~'post~'aa_book~'aa_event_session~'aa_experience_report~'aa_glossary~'aa_research_paper~'aa_video)~tags~(~'tdd))~searchTerm~'~sort~false~sortDirection~'asc~page~1)).
+Todo a aplicação foi desenvolvimento atravẽs do [TDD](https://www.agilealliance.org/glossary/tdd).
 Os casos de funcionamento entrgues foram usados como ponto de partida para a construção de todos os testes, e atrvés deles
 todas as funcçẽos foram implementadas.
 
@@ -36,7 +36,9 @@ que realiza o build da aplicação e executa os seis cenarios disponilizados.
 Para executar a aplicação, siga os passos abaixos:
  - Abra o terminal do sistema operacional
  - Navegue até a pasta que se encontra os codigos da aplicação.
- - a partir da pasta raiz do projeto e execute no terminal o comando
-   - `.\start-app.sh` <br/>
+ - a partir da pasta raiz do projeto execute o codigo abaixo no terminal
+   ```bash
+   $ ./start-app.sh
+   ```
    
  Se tudo ocorrer como esperado deve-se obter ma saida seis listas com o valor do imposto a ser cobrado em cada operação.
