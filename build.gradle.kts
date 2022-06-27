@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    // Aplications dependencies
+    // Applications dependencies
     implementation(kotlin("stdlib", kotlinLanguageVersion))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:$kotlinxSerialization")
 
