@@ -6,7 +6,7 @@ val kotlinTest: String by project
 val kotlinxSerialization: String by project
 
 application {
-    mainClass.set("Applicationkt")
+    mainClass.set("Mainkt")
 }
 
 plugins {
