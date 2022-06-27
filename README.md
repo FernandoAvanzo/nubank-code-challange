@@ -1,5 +1,5 @@
 # Nubank Code Challange
-Aplicação para calculo de ganho dcapital em compra de e venda de ações, 
+Aplicação para calculo de ganho de capital em compra e venda de ações, 
 as regras de negocio estão definidas no documento com a descrição do problema.
 
 ## Detalhes da Implementação
