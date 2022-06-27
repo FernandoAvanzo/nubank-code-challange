@@ -9,13 +9,13 @@ import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
 import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
 import kotlin.math.absoluteValue
 
-fun taxRule(operations: List<Operation>) = weightedAveragePrice(operations.filterByType(BUY))
+fun taxApply(operations: List<Operation>) = weightedAveragePrice(operations.filterByType(BUY))
     .let { wap ->
         operations.map { op ->
             when {
                 op.operation == BUY -> freeTax()
                 isTaxFree(op) -> freeTax()
-                else -> taxApply(operations.filterByType(SELL), op, wap)
+                else -> taxRule(operations.filterByType(SELL), op, wap)
             }
         }
     }
@@ -24,7 +24,7 @@ fun freeTax() = Tax(0.0)
 
 fun isTaxFree(op: Operation) = totalOperation(op.quantity, op.unitCost) <= TAX_EXEMPTION
 
-fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
+fun taxRule(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = op
     .takeIf {
         it.unitCost >= weightedAveragePrice
     }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: freeTax()
