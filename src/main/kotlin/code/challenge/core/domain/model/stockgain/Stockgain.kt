@@ -4,7 +4,7 @@ import code.challenge.core.domain.model.stockgain.StockgainConstants.BUY
 import code.challenge.core.domain.model.stockgain.StockgainConstants.QAN
 import code.challenge.core.domain.model.stockgain.StockgainConstants.SELL
 import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_EXEMPTION
-import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_RANGE
+import code.challenge.core.domain.model.stockgain.StockgainConstants.TAX_INDEX
 import code.challenge.core.domain.model.stockgain.StockgainConstants.VTO
 import code.challenge.core.domain.model.stockgain.StockgainConstants.ZERO_LOSS
 import kotlin.math.absoluteValue
@@ -30,16 +30,13 @@ fun taxApply(operations: List<Operation>, op: Operation, weightedAveragePrice: D
     }?.run { taxCalc(operations.previousOperations(op), op, weightedAveragePrice) } ?: freeTax()
 
 fun taxCalc(operations: List<Operation>, op: Operation, weightedAveragePrice: Double) = Tax(
-    tax = discountLoss(
-        profit(
-            operation = op,
-            weightedAveragePrice
-        ),
+    tax = liquidProfit(
+        profit(operation = op, weightedAveragePrice),
         loss(operations, weightedAveragePrice)
-    ) * TAX_RANGE
+    ) * TAX_INDEX
 )
 
-fun discountLoss(profit: Double, loss: Double) = (profit - loss).run {
+fun liquidProfit(profit: Double, loss: Double) = (profit - loss).run {
     takeIf { it < 0 }?.let { ZERO_LOSS } ?: this
 }
 
@@ -59,7 +56,7 @@ fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
 ) { operation, sum ->
     sum + totalOperation(operation.quantity, operation.unitCost)
 }.run {
-    buyOperations.takeIf { it.isNotEmpty() }?.let {
+    buyOperations.takeIfNotEmpty()?.let {
         sumList(
             it, QAN
         ) { operation, sum -> sum + operation.quantity }
@@ -71,6 +68,8 @@ fun weightedAveragePrice(buyOperations: List<Operation>) = sumList(
 fun totalOperation(quantity: Int, unitcost: Double): Double = unitcost * quantity
 
 fun List<Operation>.filterByType(type: String) = this.filter { it.operation == type }
+
+fun List<Operation>.takeIfNotEmpty() = takeIf { it.isNotEmpty() }
 
 private fun List<Operation>.previousOperations(op: Operation) = this.subList(0, this.indexOf(op))
 

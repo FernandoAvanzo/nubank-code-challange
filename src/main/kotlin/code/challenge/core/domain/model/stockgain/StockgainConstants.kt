@@ -7,5 +7,5 @@ object StockgainConstants {
     const val QAN = 0
     const val ZERO_LOSS = 0.00
     const val TAX_EXEMPTION = 20000.00
-    const val TAX_RANGE = 0.2
+    const val TAX_INDEX = 0.2
 }
