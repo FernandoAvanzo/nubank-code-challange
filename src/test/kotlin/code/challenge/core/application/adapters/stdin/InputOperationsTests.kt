@@ -11,7 +11,7 @@ class InputOperationsTests {
     fun should_build_a_operations_list_from_string(){
         val given = """[{"operation":"buy", "unit-cost":10, "quantity": 10000}, {"operation":"sell","unit-cost":20, "quantity": 5000}]"""
 
-        val whendo = given.decodeOperations()
+        val `when` = given.decodeOperations()
 
         val then = listOf(
             Operation(
@@ -26,10 +26,10 @@ class InputOperationsTests {
             )
         )
 
-        assert(then.size == whendo.size)
+        assert(then.size == `when`.size)
         assert(then
-            .zip(whendo)
+            .zip(`when`)
             .all { it.first == it.second }
-        ){ "${whendo}==${then}" }
+        ){ "${`when`}==${then}" }
     }
 }

@@ -1,5 +1,5 @@
 import code.challenge.core.application.adapters.stdin.decodeOperations
-import code.challenge.core.application.adapters.stdout.encodeTaxs
+import code.challenge.core.application.adapters.stdout.encodeTaxes
 import code.challenge.core.domain.model.stockgain.taxRule
 
 fun main(args: Array<String>): Unit = args
@@ -8,5 +8,5 @@ fun main(args: Array<String>): Unit = args
     } ?: println("Nenhuma Lista De Operações encontrada")
 
 fun calcStocksGainTaxs(operations: String) = operations.run {
-    taxRule(decodeOperations()).encodeTaxs()
+    taxRule(decodeOperations()).encodeTaxes()
 }

@@ -12,7 +12,7 @@ class OutputTaxsTests {
             Tax(tax = 10000.0),
         )
 
-        val whendo = given.encodeTaxs()
+        val whendo = given.encodeTaxes()
 
         val then = """[{"tax":0},{"tax":10000}]"""
 

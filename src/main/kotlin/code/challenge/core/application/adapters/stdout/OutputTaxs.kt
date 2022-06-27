@@ -6,13 +6,15 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun List<Tax>.encodeTaxs(): String = this
+fun List<Tax>.encodeTaxes(): String = this
     .map {
-        ShadowTax(it.tax.toInt())
+        TaxOut(
+            it.tax.toInt()
+        )
     }.let { Json.encodeToString(it) }
 
 @Serializable
-data class ShadowTax(
+data class TaxOut(
     @SerialName("tax")
     val tax: Int,
 )

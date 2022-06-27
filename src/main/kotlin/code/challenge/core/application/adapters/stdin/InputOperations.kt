@@ -9,13 +9,17 @@ import kotlinx.serialization.json.Json
 private val json = Json { isLenient = true }
 
 fun String.decodeOperations(): List<Operation> = json
-    .decodeFromString<List<OperationShadow>>(this)
+    .decodeFromString<List<OperationIn>>(this)
     .map {
-        Operation(it.operation, it.quantity, it.unitCost)
+        Operation(
+            it.operation,
+            it.quantity,
+            it.unitCost
+        )
     }
 
 @Serializable
-data class OperationShadow(
+data class OperationIn(
     @SerialName("operation")
     val operation: String = "",
     @SerialName("quantity")
