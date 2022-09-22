@@ -1,1 +1,1 @@
-rootProject.name = "nubank-code-challange"
+rootProject.name = "nubank-code-challenge"
