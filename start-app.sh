@@ -9,4 +9,4 @@ export CASE06='[{"operation":"buy", "unit-cost":10, "quantity": 10000},{"operati
 
 ./gradlew clean
 ./gradlew build
-java -jar ./build/libs/nubank-code-challange.jar "$CASE01" "$CASE02" "$CASE03" "$CASE04" "$CASE05" "$CASE06"
+java -jar ./build/libs/nubank-code-challenge.jar "$CASE01" "$CASE02" "$CASE03" "$CASE04" "$CASE05" "$CASE06"
